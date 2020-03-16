@@ -1,0 +1,79 @@
+#define PIN_LED001 2
+#define PIN_LED002 3
+#define PIN_LED003 4
+int i=0;
+int x=1000;
+int y=1500;
+int z=1300;
+int k=1500;
+void setup ()
+{                      //接受端002号
+  Serial.begin(9600);//和发送端一样   两个433m 我也设置了都一样 并且查看过 
+
+    pinMode(PIN_LED001,OUTPUT);     
+  digitalWrite(PIN_LED001,HIGH);
+  
+  pinMode(PIN_LED002,OUTPUT);     
+  digitalWrite(PIN_LED002,HIGH);
+  
+  pinMode(PIN_LED003,OUTPUT);     
+  digitalWrite(PIN_LED003,HIGH);
+
+}
+ 
+void loop()
+{
+
+   int a=0;
+   int i=0;
+ 
+     while(Serial.available()>0)
+     {
+      delay(5);
+    i=Serial.read(); //读取串口的值
+      x=x-50;
+  y=y-100;
+  z=z-80;
+  if(x<100||y<100||z<100)
+  {
+x=1000;
+y=1500;
+ z=1300;
+  }
+
+  delay(k);
+  k=k-10;
+  if(k==100)
+  {
+    k=1000;
+  }
+
+
+
+delay(20);
+      if((i==100)||(i==107)||(i==113)||(i=125))                           
+  {                 
+    delay(30);
+    digitalWrite(PIN_LED002,LOW); 
+    delay(x);
+    digitalWrite(PIN_LED002,HIGH); 
+
+  }
+
+   if((i==100)||(i==107)||(i==113)||(i=125))                           
+  {                 
+    delay(30);
+    digitalWrite(PIN_LED001,LOW); 
+    delay(y);
+    digitalWrite(PIN_LED001,HIGH); 
+    digitalWrite(PIN_LED003,LOW); 
+    delay(z);
+    digitalWrite(PIN_LED003,HIGH); 
+  }
+}
+
+
+
+  }
+
+

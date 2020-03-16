@@ -1,0 +1,113 @@
+int n=0;
+#define KEY_FLASH 0
+#define PIN_LEDred 2
+#define PIN_LEDgreen 3
+#define PIN_LEDblue 4
+#define PIN_LEDcharge 5
+//**********************************************************************************
+volatile unsigned long triggertime = 0;//按键按下，第一次触发中断的时刻
+volatile unsigned long delta = 200;//去抖期的时长 （毫秒）
+volatile int i = 0;//按下第i次3.
+int i1 = 0;
+//************************************************************************************
+
+int a=1;
+volatile int state = LOW;// 定义默认输入状态
+void setup ()
+{
+  Serial.begin(9600); //发送端 
+
+  pinMode(2,OUTPUT);
+
+  digitalWrite(2,HIGH);
+  pinMode(3,OUTPUT);
+
+  digitalWrite(3,HIGH);
+  pinMode(4,OUTPUT);
+
+  digitalWrite(4,HIGH);
+    pinMode(5,OUTPUT);
+
+  digitalWrite(5,HIGH);
+    attachInterrupt(KEY_FLASH,stateChange, RISING);//LOW模式 rising
+
+    int k=0;
+    for(k=0;k<=100;k++)
+    {
+      
+      Serial.write(a);
+      delay(100);
+    }
+
+  
+}
+
+
+ void stateChange(void){
+ //LED灯状态翻转，实现发生外部按键事件时对LED灯状态的改变
+
+ if (millis() - triggertime > delta)//如果中断内时间减去上次进入中断时间大于消抖时间
+    { 
+//i+1，并记录中断完全执行时间
+i++;
+triggertime =millis();
+
+
+     //全部先灭
+digitalWrite(PIN_LEDred,HIGH);//红模式
+digitalWrite(PIN_LEDgreen,HIGH);//绿模式
+digitalWrite(PIN_LEDblue,HIGH);//蓝模式
+ if(a==1)
+ {
+   digitalWrite(PIN_LEDred,LOW);//红模式
+   a=a+1;
+ }
+ else if(a==2)
+ {
+  digitalWrite(PIN_LEDgreen,LOW);//绿模式
+  a=a+1;
+ }
+ else if(a==3)
+ {
+    digitalWrite(PIN_LEDblue,LOW);//蓝模式
+    a=0;
+ }
+
+    }
+}
+//****************************************************
+void loop()
+{
+
+n=analogRead(A0);   
+                     //创建一个变量n，将A0数字口的状态采集出来赋值给他。
+  Serial.write(n);
+//    Serial.println(n,DEC);
+  
+    if(n>65)
+    {
+      digitalWrite(PIN_LEDred,LOW);
+      delay(30);
+      digitalWrite(PIN_LEDred,HIGH);
+
+      digitalWrite(PIN_LEDblue,LOW);
+        delay(50);
+      digitalWrite(PIN_LEDblue,HIGH);
+         
+    }
+    if(n>90)
+    {
+      digitalWrite(PIN_LEDgreen,LOW);
+      delay(50);
+      digitalWrite(PIN_LEDgreen,HIGH);
+      
+    }
+                     
+
+
+}
+ 
+
+
+  
+ 

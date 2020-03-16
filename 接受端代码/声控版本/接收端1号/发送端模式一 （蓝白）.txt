@@ -1,0 +1,109 @@
+#define PIN_LEDred 2
+#define PIN_LEDwhite 3
+#define PIN_LEDblue 4
+#define PIN_LEDgreen 5
+int i=0;
+  int a=4;
+void setup ()
+{                    
+  Serial.begin(9600);//和发送端一样 
+
+    pinMode(PIN_LEDred,OUTPUT);     
+  digitalWrite(PIN_LEDred,HIGH);
+  
+  pinMode(PIN_LEDgreen,OUTPUT);     
+  digitalWrite(PIN_LEDgreen,HIGH);
+  
+  pinMode(PIN_LEDblue,OUTPUT);     
+  digitalWrite(PIN_LEDblue,HIGH);
+
+  pinMode(PIN_LEDwhite,OUTPUT);     
+  digitalWrite(PIN_LEDwhite,HIGH); 
+//  
+//   if(a==4)
+// {
+//    digitalWrite(PIN_LEDwhite,LOW);//白蓝模式
+//    digitalWrite(PIN_LEDblue,LOW);//蓝模式
+//    
+// }
+
+  for(int k=0;k<=100;k++)
+    {
+
+       if(a==1)
+ {
+   digitalWrite(PIN_LEDred,LOW);//红模式
+ 
+ }
+ else if(a==2)
+ {
+  digitalWrite(PIN_LEDgreen,LOW);//绿模式
+
+ }
+ else if(a==3)
+ {
+    digitalWrite(PIN_LEDblue,LOW);//蓝模式
+   
+ }
+  else if(a==4)
+ {
+    digitalWrite(PIN_LEDwhite,LOW);//白蓝模式
+    digitalWrite(PIN_LEDblue,LOW);//蓝模式
+
+ }
+ while (Serial.available() > 0) 
+{
+  a=Serial.read();
+}
+      delay(100);
+      
+    }
+         //全部先灭
+digitalWrite(PIN_LEDred,HIGH);//红模式
+digitalWrite(PIN_LEDgreen,HIGH);//绿模式
+digitalWrite(PIN_LEDblue,HIGH);//蓝模式
+digitalWrite(PIN_LEDwhite,HIGH);//白蓝模式
+
+}
+ 
+void loop()
+{
+
+  
+   int n=0;
+ 
+   if(a==4)//白蓝红模式
+   {
+     n=Serial.read(); //读取串口的值
+    delay(1);
+    
+       if(n>65)
+    {
+      digitalWrite(PIN_LEDwhite,LOW);
+      delay(30);
+      digitalWrite(PIN_LEDwhite,HIGH);
+
+      digitalWrite(PIN_LEDred,LOW);
+        delay(10);
+      digitalWrite(PIN_LEDred,HIGH);
+         
+    }
+    if(n>90)
+    {
+      digitalWrite(PIN_LEDblue,LOW);
+      delay(50);
+      digitalWrite(PIN_LEDblue,HIGH);
+      
+    }
+   }
+   
+
+
+
+
+
+
+
+  }
+
+

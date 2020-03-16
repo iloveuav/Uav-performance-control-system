@@ -1,0 +1,77 @@
+int n=0;
+#define KEY_FLASH 0
+#define PIN_LED001 2
+#define PIN_LED002 3
+#define PIN_LED003 4
+#define PIN_LEDcharge 5
+
+int a=1;
+volatile int state = LOW;// 定义默认输入状态
+void setup ()
+{
+  Serial.begin(9600); //发送端 
+
+  pinMode(2,OUTPUT);
+
+  digitalWrite(2,HIGH);
+  pinMode(3,OUTPUT);
+
+  digitalWrite(3,HIGH);
+  pinMode(4,OUTPUT);
+
+  digitalWrite(4,HIGH);
+    pinMode(5,OUTPUT);
+
+  digitalWrite(5,HIGH);
+    attachInterrupt(PIN_LEDcharge,stateChange,LOW);//LOW模式 rising
+
+  
+}
+
+
+ void stateChange(){
+ //LED灯状态翻转，实现发生外部按键事件时对LED灯状态的改变
+ //全部先灭
+digitalWrite(PIN_LED001,HIGH);//红模式
+digitalWrite(PIN_LED002,HIGH);//绿模式
+digitalWrite(PIN_LED003,HIGH);//蓝模式
+ if(a==1)
+ {
+   digitalWrite(PIN_LED001,LOW);//红模式
+   a=a+1;
+ }
+ else if(a==2)
+ {
+  digitalWrite(PIN_LED002,LOW);//绿模式
+  a=a+1;
+ }
+ else if(a==3)
+ {
+    digitalWrite(PIN_LED003,LOW);//蓝模式
+    a=0;
+ }
+ 
+}
+void loop()
+{
+
+n=analogRead(A0);   
+                     //创建一个变量n，将A0数字口的状态采集出来赋值给他。
+//  Serial.write(n);
+    Serial.println(n);
+  
+    if(n>65)
+    {
+      digitalWrite(PIN_LEDcharge,LOW);
+      delay(100);
+      digitalWrite(PIN_LEDcharge,HIGH);
+    }
+                     
+
+
+}
+ 
+
+
+  
+ 
